@@ -57,6 +57,7 @@ const Canvas = (props: Props) => {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
+      data-testid="canvas-wrapper"
     >
       <canvas
         height={600}
