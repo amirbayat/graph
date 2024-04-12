@@ -41,6 +41,7 @@
     ]
   },
   "devDependencies": {
+    "canvas": "^2.11.2",
     "jest-canvas-mock": "^2.5.2"
   }
 }
