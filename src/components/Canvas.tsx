@@ -4,6 +4,7 @@ import { TNode } from "../types/node.type";
 import { generateNodes } from "../utils/generateNodes";
 import Actions from "./Actions";
 import { useMouseDrag } from "../hooks/useMouseDrag";
+import { getVisibleNodes } from "../utils/getVisibleNodes";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
@@ -19,7 +20,7 @@ const Canvas = () => {
   const nodesRef = useRef<TNode[]>([]);
 
   function generate() {
-    const nodes = generateNodes(100, 300, 1000, 1000);
+    const nodes = generateNodes(500000, 1000000, 100000, 100000);
     nodesRef.current = nodes;
     renderGraph(nodes);
   }
@@ -44,8 +45,18 @@ const Canvas = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#ddd";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
 
-    nodes.forEach(({ x, y, id, edges, inEdges }) => {
+    const visibleNodes = getVisibleNodes({
+      nodes,
+      translateX,
+      translateY,
+      canvasWidth,
+      canvasHeight,
+    });
+
+    visibleNodes.forEach(({ x, y, id, edges, inEdges }) => {
       ctx.beginPath();
       const xP = x + translateX;
       const yP = y + translateY;

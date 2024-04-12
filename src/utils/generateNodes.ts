@@ -21,6 +21,7 @@ export function generateNodes(
   for (let i = 0; i < edgesCount; i++) {
     const source = Math.floor(Math.random() * nodesCount);
     const target = Math.floor(Math.random() * nodesCount);
+
     let hasEdgeSource = nodes?.[source]?.edges?.find(
       (sourceEdge) => sourceEdge.id == target
     );
