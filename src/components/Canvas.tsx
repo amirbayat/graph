@@ -8,7 +8,8 @@ const Canvas = () => {
   const { canvasRef } = useCanvas();
   const [zoom, setZoom] = useState<number>(1);
   function generate() {
-    const nodes = generateNodes();
+    const nodes = generateNodes(1000, 3000, 1000, 1000);
+    renderGraph(nodes);
   }
 
   function zoomIn() {
@@ -21,6 +22,26 @@ const Canvas = () => {
       setZoom(Number((zoom - 0.1).toFixed(2)));
       //   renderGraph(nodesRef.current);
     }
+  }
+
+  function renderGraph(nodes: TNode[]) {
+    const canvas = canvasRef.current;
+    if (canvas == null) return;
+    const ctx = canvas.getContext("2d");
+    if (ctx == null) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#ddd";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    nodes.forEach(({ x, y, id, edges, inEdges }) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "blue";
+      ctx.fill();
+      ctx.font = "12px Arial";
+      ctx.fillStyle = "black";
+      ctx.fillText(id.toString(), x - 5, y - 10);
+    });
   }
 
   return (
