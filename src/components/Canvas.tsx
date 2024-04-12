@@ -19,7 +19,7 @@ const Canvas = () => {
   const nodesRef = useRef<TNode[]>([]);
 
   function generate() {
-    const nodes = generateNodes(1000, 3000, 2000, 2000);
+    const nodes = generateNodes(100, 300, 1000, 1000);
     nodesRef.current = nodes;
     renderGraph(nodes);
   }
@@ -55,6 +55,26 @@ const Canvas = () => {
       ctx.font = "12px Arial";
       ctx.fillStyle = "black";
       ctx.fillText(id.toString(), xP - 5, yP - 10);
+
+      edges.forEach((edge) => {
+        const endXP = edge.x + translateX;
+        const endYP = edge.y + translateY;
+        ctx.beginPath();
+        ctx.moveTo(xP, yP);
+        ctx.lineTo(endXP, endYP);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+      });
+
+      inEdges.forEach((edge) => {
+        const endXP = edge.x + translateX;
+        const endYP = edge.y + translateY;
+        ctx.beginPath();
+        ctx.moveTo(xP, yP);
+        ctx.lineTo(endXP, endYP);
+        ctx.strokeStyle = "green";
+        ctx.stroke();
+      });
     });
   }
 
