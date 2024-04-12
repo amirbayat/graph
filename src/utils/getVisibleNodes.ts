@@ -9,13 +9,15 @@ type TGetVisibleNodes = {
   translateY: number;
   canvasWidth: number;
   canvasHeight: number;
+  zoom: number;
 };
 
 export function getVisibleNodes(args: TGetVisibleNodes) {
-  const { nodes, translateX, translateY, canvasWidth, canvasHeight } = args;
+  const { nodes, translateX, translateY, canvasWidth, canvasHeight, zoom } =
+    args;
   return nodes.filter((node) => {
-    const x = node.x + translateX;
-    const y = node.y + translateY;
+    const x = node.x * zoom + translateX;
+    const y = node.y * zoom + translateY;
     const nWindowH = N_WINDOW * canvasWidth;
     const pWindowH = P_WINDOW * canvasWidth;
     const nWindowV = N_WINDOW * canvasHeight;

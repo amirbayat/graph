@@ -27,13 +27,13 @@ const Canvas = () => {
 
   function zoomIn() {
     setZoom(Number((zoom + 0.1).toFixed(2)));
-    // renderGraph(nodesRef.current);
+    renderGraph(nodesRef.current);
   }
 
   function zoomOut() {
     if (zoom > 1) {
       setZoom(Number((zoom - 0.1).toFixed(2)));
-      //   renderGraph(nodesRef.current);
+      renderGraph(nodesRef.current);
     }
   }
 
@@ -54,12 +54,13 @@ const Canvas = () => {
       translateY,
       canvasWidth,
       canvasHeight,
+      zoom,
     });
 
     visibleNodes.forEach(({ x, y, id, edges, inEdges }) => {
       ctx.beginPath();
-      const xP = x + translateX;
-      const yP = y + translateY;
+      const xP = x * zoom + translateX;
+      const yP = y * zoom + translateY;
       ctx.arc(xP, yP, 5, 0, Math.PI * 2);
       ctx.fillStyle = "blue";
       ctx.fill();
@@ -68,8 +69,8 @@ const Canvas = () => {
       ctx.fillText(id.toString(), xP - 5, yP - 10);
 
       edges.forEach((edge) => {
-        const endXP = edge.x + translateX;
-        const endYP = edge.y + translateY;
+        const endXP = edge.x * zoom + translateX;
+        const endYP = edge.y * zoom + translateY;
         ctx.beginPath();
         ctx.moveTo(xP, yP);
         ctx.lineTo(endXP, endYP);
@@ -78,8 +79,8 @@ const Canvas = () => {
       });
 
       inEdges.forEach((edge) => {
-        const endXP = edge.x + translateX;
-        const endYP = edge.y + translateY;
+        const endXP = edge.x * zoom + translateX;
+        const endYP = edge.y * zoom + translateY;
         ctx.beginPath();
         ctx.moveTo(xP, yP);
         ctx.lineTo(endXP, endYP);
