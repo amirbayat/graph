@@ -38,6 +38,7 @@ const Canvas = () => {
   }
 
   function renderGraph(nodes: TNode[]) {
+    const TEXT_MOVE = 10;
     const canvas = canvasRef.current;
     if (canvas == null) return;
     const ctx = canvas.getContext("2d");
@@ -76,6 +77,20 @@ const Canvas = () => {
         ctx.lineTo(endXP, endYP);
         ctx.strokeStyle = "red";
         ctx.stroke();
+        const angle = Math.atan2(endYP - yP, endXP - xP);
+        ctx.font = `${10 + zoom}px Arial`;
+        ctx.textAlign = "left";
+        ctx.fillStyle = "black";
+        const text = `${id} : ${edge.id}`;
+
+        ctx.save();
+        ctx.translate(
+          xP + TEXT_MOVE * zoom,
+          yP + TEXT_MOVE * zoom * Math.tan(angle)
+        );
+        ctx.rotate(angle);
+        ctx.fillText(text, 0, 0);
+        ctx.restore();
       });
 
       inEdges.forEach((edge) => {
@@ -86,6 +101,21 @@ const Canvas = () => {
         ctx.lineTo(endXP, endYP);
         ctx.strokeStyle = "green";
         ctx.stroke();
+
+        const angle = Math.atan2(endYP - yP, endXP - xP);
+        ctx.font = `${10 + zoom}px Arial`;
+        ctx.textAlign = "left";
+        ctx.fillStyle = "black";
+        const text = `${edge.id} : ${id}`;
+
+        ctx.save();
+        ctx.translate(
+          xP + TEXT_MOVE * zoom,
+          yP + TEXT_MOVE * zoom * Math.tan(angle)
+        );
+        ctx.rotate(angle);
+        ctx.fillText(text, 0, 0);
+        ctx.restore();
       });
     });
   }
