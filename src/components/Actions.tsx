@@ -1,5 +1,3 @@
-import { TNode } from "../types/node.type";
-
 type Props = {
   generate: () => void;
   zoomOut: () => void;

@@ -6,7 +6,12 @@ import Actions from "./Actions";
 import { useMouseDrag } from "../hooks/useMouseDrag";
 import { renderGraphHelper } from "../utils/renderGraph";
 
-const Canvas = () => {
+type Props = {
+  nodes?: TNode[];
+};
+
+const Canvas = (props: Props) => {
+  const { nodes: testNodes = [] } = props;
   const { canvasRef } = useCanvas();
   const [zoom, setZoom] = useState<number>(1);
 
@@ -21,8 +26,8 @@ const Canvas = () => {
 
   function generate() {
     const nodes = generateNodes(500000, 1000000, 100000, 100000);
-    nodesRef.current = nodes;
-    renderGraph(nodes);
+    nodesRef.current = [...testNodes, ...nodes];
+    renderGraph(nodesRef.current);
   }
 
   function zoomIn() {
@@ -53,7 +58,12 @@ const Canvas = () => {
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
     >
-      <canvas height={600} width={600} ref={canvasRef}></canvas>
+      <canvas
+        height={600}
+        width={600}
+        ref={canvasRef}
+        data-testid="canvas"
+      ></canvas>
       <Actions
         generate={generate}
         zoom={zoom}
