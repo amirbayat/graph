@@ -3,3 +3,17 @@
   padding: 0px;
   box-sizing: border-box;
 }
+
+.actions-wrapper{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+}
+
+.actions-wrapper button{
+  margin-right: 8px;
+}
+
+.actions-wrapper span {
+  margin-right: 8px;
+}
