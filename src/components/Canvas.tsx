@@ -1,14 +1,26 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useCanvas } from "../hooks/useCanvas";
 import { TNode } from "../types/node.type";
 import { generateNodes } from "../utils/generateNodes";
 import Actions from "./Actions";
+import { useMouseDrag } from "../hooks/useMouseDrag";
 
 const Canvas = () => {
   const { canvasRef } = useCanvas();
   const [zoom, setZoom] = useState<number>(1);
+
+  const {
+    handleMouseDown,
+    handleMouseUp,
+    handleMouseMove,
+    translateX,
+    translateY,
+  } = useMouseDrag({ renderGraphOnMouseMove });
+  const nodesRef = useRef<TNode[]>([]);
+
   function generate() {
-    const nodes = generateNodes(1000, 3000, 1000, 1000);
+    const nodes = generateNodes(1000, 3000, 2000, 2000);
+    nodesRef.current = nodes;
     renderGraph(nodes);
   }
 
@@ -35,17 +47,29 @@ const Canvas = () => {
 
     nodes.forEach(({ x, y, id, edges, inEdges }) => {
       ctx.beginPath();
-      ctx.arc(x, y, 5, 0, Math.PI * 2);
+      const xP = x + translateX;
+      const yP = y + translateY;
+      ctx.arc(xP, yP, 5, 0, Math.PI * 2);
       ctx.fillStyle = "blue";
       ctx.fill();
       ctx.font = "12px Arial";
       ctx.fillStyle = "black";
-      ctx.fillText(id.toString(), x - 5, y - 10);
+      ctx.fillText(id.toString(), xP - 5, yP - 10);
     });
   }
 
+  function renderGraphOnMouseMove() {
+    renderGraph(nodesRef.current);
+  }
+
   return (
-    <div>
+    <div
+      className="wrapper"
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+    >
       <canvas height={600} width={600} ref={canvasRef}></canvas>
       <Actions
         generate={generate}
